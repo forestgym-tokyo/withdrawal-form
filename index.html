@@ -6,6 +6,7 @@
 <title>The Forest Gym | 退会届フォーム</title>
 
 <style>
+
 *{
   box-sizing:border-box;
   margin:0;
@@ -23,22 +24,6 @@ body{
 .container{
   max-width:520px;
   margin:0 auto;
-}
-
-.logo{
-  text-align:center;
-  margin-bottom:10px;
-  font-size:14px;
-  letter-spacing:3px;
-  color:#00c853;
-  font-weight:700;
-}
-
-h1{
-  text-align:center;
-  font-size:30px;
-  margin-bottom:4px;
-  font-weight:800;
 }
 
 .subtitle{
@@ -110,35 +95,6 @@ select:focus{
   border-color:#00c853;
 }
 
-.radio-group{
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-
-.radio-item{
-  display:flex;
-  align-items:flex-start;
-  gap:12px;
-  background:#101010;
-  border:1px solid #2b2b2b;
-  border-radius:14px;
-  padding:14px;
-}
-
-.radio-item input{
-  width:20px;
-  height:20px;
-  accent-color:#00c853;
-  margin-top:2px;
-}
-
-.radio-item label{
-  margin:0;
-  font-size:15px;
-  color:#fff;
-}
-
 .notice{
   font-size:12px;
   color:#aaa;
@@ -205,6 +161,7 @@ textarea{
 .hidden{
   display:none;
 }
+
 </style>
 </head>
 
@@ -212,14 +169,30 @@ textarea{
 
 <div class="container">
 
-<div class="logo">
-THE FOREST GYM
+<div style="text-align:center;margin-bottom:18px;">
+  <img
+    src="logo(5).png"
+    alt="The Forest Gym"
+    style="
+      width:260px;
+      max-width:85%;
+      height:auto;
+      display:inline-block;
+    "
+  >
 </div>
 
-<h1>退会届フォーム</h1>
+<h1 style="
+  text-align:center;
+  font-size:30px;
+  margin-bottom:4px;
+  font-weight:700;
+">
+  退会届フォーム
+</h1>
 
 <div class="subtitle">
-WITHDRAWAL REQUEST
+  WITHDRAWAL REQUEST
 </div>
 
 <form>
@@ -234,40 +207,40 @@ WITHDRAWAL REQUEST
 <div class="row">
   <div class="field">
     <label>姓</label>
-    <input type="text">
+    <input type="text" placeholder="山田">
   </div>
 
   <div class="field">
     <label>名</label>
-    <input type="text">
+    <input type="text" placeholder="太郎">
   </div>
 </div>
 
 <div class="row">
   <div class="field">
     <label>姓（フリガナ）</label>
-    <input type="text">
+    <input type="text" placeholder="ヤマダ">
   </div>
 
   <div class="field">
     <label>名（フリガナ）</label>
-    <input type="text">
+    <input type="text" placeholder="タロウ">
   </div>
 </div>
 
 <div class="field">
   <label>会員番号</label>
-  <input type="text">
+  <input type="text" placeholder="123456">
 </div>
 
 <div class="field">
   <label>メールアドレス</label>
-  <input type="email">
+  <input type="email" placeholder="example@gmail.com">
 </div>
 
 <div class="field">
   <label>電話番号</label>
-  <input type="tel">
+  <input type="tel" placeholder="09012345678">
 </div>
 
 </div>
@@ -279,18 +252,11 @@ WITHDRAWAL REQUEST
 <small>WITHDRAWAL DATE</small>
 </div>
 
-<div class="radio-group">
-
-<div class="radio-item">
-  <input type="radio" name="withdrawDate" checked>
-  <label>2026年5月末</label>
-</div>
-
-<div class="radio-item">
-  <input type="radio" name="withdrawDate">
-  <label>2026年6月末</label>
-</div>
-
+<div class="field">
+<select>
+  <option>2026年6月末</option>
+  <option>2026年7月末</option>
+</select>
 </div>
 
 <div class="notice">
@@ -306,33 +272,18 @@ WITHDRAWAL REQUEST
 <small>REASON FOR WITHDRAWAL</small>
 </div>
 
-<div class="radio-group">
-
-<div class="radio-item">
-  <input type="radio" name="reason" value="move">
-  <label>転居（予定含む）のため</label>
-</div>
-
-<div class="radio-item">
-  <input type="radio" name="reason" value="less">
-  <label>利用機会が少ないため</label>
-</div>
-
-<div class="radio-item">
-  <input type="radio" name="reason" value="goal">
-  <label>目標達成したため</label>
-</div>
-
-<div class="radio-item">
-  <input type="radio" name="reason" value="other" id="otherRadio">
-  <label>その他</label>
-</div>
-
+<div class="field">
+<select id="reasonSelect">
+  <option>転居（予定含む）のため</option>
+  <option>利用機会が少ないため</option>
+  <option>目標達成したため</option>
+  <option>その他</option>
+</select>
 </div>
 
 <div class="field hidden" id="otherField" style="margin-top:16px;">
   <label>理由、ご意見等自由にご記載ください。</label>
-  <textarea></textarea>
+  <textarea placeholder="ご自由にご記載ください"></textarea>
 </div>
 
 </div>
@@ -395,18 +346,24 @@ SUBMIT WITHDRAWAL REQUEST
 </div>
 
 <script>
-const otherRadio = document.getElementById("otherRadio");
+
+const reasonSelect = document.getElementById("reasonSelect");
 const otherField = document.getElementById("otherField");
 
-document.querySelectorAll('input[name="reason"]').forEach(radio=>{
-  radio.addEventListener("change",()=>{
-    if(otherRadio.checked){
-      otherField.classList.remove("hidden");
-    }else{
-      otherField.classList.add("hidden");
-    }
-  });
+reasonSelect.addEventListener("change", () => {
+
+  if(reasonSelect.value === "その他"){
+
+    otherField.classList.remove("hidden");
+
+  }else{
+
+    otherField.classList.add("hidden");
+
+  }
+
 });
+
 </script>
 
 </body>
