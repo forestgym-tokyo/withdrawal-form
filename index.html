@@ -617,6 +617,8 @@ document.getElementById("confirm3").checked
 
 };
 
+try{
+
 const res = await fetch(GAS_URL,{
 
 method:"POST",
@@ -649,10 +651,16 @@ alert(data.message);
 
 }
 
+}catch(err){
+
+console.error(err);
+
+alert("送信エラー");
+
+}
+
+
 });
-
-
-
 loadWithdrawalOptions();
 
 </script>
