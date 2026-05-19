@@ -528,33 +528,57 @@ form.addEventListener("submit", async(e)=>{
   };
 
   try{
-    const formData = new FormData();
-    formData.append("data", JSON.stringify(payload));
 
-    const res = await fetch(GAS_URL,{
-      method:"POST",
-      body:formData
-    });
+  const formData = new FormData();
 
-    const data = await res.json();
+  formData.append(
+    "data",
+    JSON.stringify(payload)
+  );
 
-    if(data.ok){
-      alert(data.message);
-      form.reset();
-      otherField.classList.add("hidden");
-      memberStatus.textContent = "";
-      loadWithdrawalOptions();
-    }else{
-      alert(data.message);
-    }
+  const res = await fetch(GAS_URL,{
 
-  }catch(err){
-    console.error(err);
-    alert("送信エラー");
+    method:"POST",
+
+    body:formData
+
+  });
+
+  const text = await res.text();
+
+  alert(text);
+
+  const data = JSON.parse(text);
+
+  if(data.ok){
+
+    alert(data.message);
+
+    form.reset();
+
+    otherField.classList.add("hidden");
+
+    memberStatus.textContent = "";
+
+    loadWithdrawalOptions();
+
+  }else{
+
+    alert(data.message);
+
   }
+
+}catch(err){
+
+  console.error(err);
+
+  alert("送信エラー：" + err.message);
+
+}
 });
 
 loadWithdrawalOptions();
+
 </script>
 
 </body>
