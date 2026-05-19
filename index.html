@@ -493,9 +493,18 @@ async function loadWithdrawalOptions(){
 
     const text = await res.text();
 
+    console.log(text);
+
     const data = JSON.parse(text);
 
+    console.log(data);
+
     withdrawalDateSelect.innerHTML = "";
+
+    if(!data.options){
+      alert("optionsなし");
+      return;
+    }
 
     data.options.forEach(opt=>{
 
@@ -513,7 +522,7 @@ async function loadWithdrawalOptions(){
 
     console.error(err);
 
-    alert("退会期日取得エラー");
+    alert("退会期日取得失敗");
 
   }
 
