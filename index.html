@@ -627,12 +627,16 @@ document.getElementById("confirm3").checked
 
 try{
 
+const formData = new FormData();
+
+formData.append(
+  "data",
+  JSON.stringify(payload)
+);
+
 const res = await fetch(GAS_URL,{
-
-method:"POST",
-
-body:JSON.stringify(payload)
-
+  method:"POST",
+  body:formData
 });
 
 const data = await res.json();
