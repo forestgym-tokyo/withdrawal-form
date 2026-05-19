@@ -440,253 +440,121 @@ SUBMIT WITHDRAWAL REQUEST
 </div>
 
 <script>
-
 const GAS_URL =
 "https://script.google.com/macros/s/AKfycbx_5y8jMr6ItMS0UOijXEhDNxSJqPDFVmRj5-mOHxpu3ZBtRpmmP9M1UXs1DyRV73LC7A/exec";
 
-const reasonSelect =
-document.getElementById("reasonSelect");
-
-const otherField =
-document.getElementById("otherField");
-
-const withdrawalDateSelect =
-document.getElementById("withdrawalDate");
-
-const form =
-document.getElementById("withdrawalForm");
-
-const memberNoInput =
-document.getElementById("memberNo");
-
-const emailInput =
-document.getElementById("email");
-
-const memberStatus =
-document.getElementById("memberStatus");
-
-
+const reasonSelect = document.getElementById("reasonSelect");
+const otherField = document.getElementById("otherField");
+const withdrawalDateSelect = document.getElementById("withdrawalDate");
+const form = document.getElementById("withdrawalForm");
+const memberNoInput = document.getElementById("memberNo");
+const emailInput = document.getElementById("email");
+const memberStatus = document.getElementById("memberStatus");
 
 reasonSelect.addEventListener("change",()=>{
-
-  if(reasonSelect.value==="その他"){
-
-    otherField.classList.remove("hidden");
-
-  }else{
-
-    otherField.classList.add("hidden");
-
-  }
-
+  otherField.classList.toggle("hidden", reasonSelect.value !== "その他");
 });
 
-
-
 async function loadWithdrawalOptions(){
+  withdrawalDateSelect.innerHTML = `
+    <option value="">読み込み中...</option>
+  `;
 
-  try{
+  const res = await fetch(GAS_URL + "?action=getWithdrawalOptions");
+  const data = await res.json();
 
-    const res = await fetch(
-      GAS_URL + "?action=getWithdrawalOptions"
-    );
-
-    const text = await res.text();
-
-    console.log(text);
-
-    const data = JSON.parse(text);
-
-    console.log(data);
-
-    withdrawalDateSelect.innerHTML = "";
-
-    if(!data.options){
-      alert("optionsなし");
-      return;
-    }
-
-    data.options.forEach(opt=>{
-
-      const option =
-      document.createElement("option");
-
-      option.value = opt.value;
-      option.textContent = opt.label;
-
-      withdrawalDateSelect.appendChild(option);
-
-    });
-
-  }catch(err){
-
-    console.error(err);
-
-    alert("退会期日取得失敗");
-
+  if(!data.ok || !data.options){
+    withdrawalDateSelect.innerHTML = `
+      <option value="">退会期日を取得できません</option>
+    `;
+    return;
   }
 
+  withdrawalDateSelect.innerHTML = "";
+
+  data.options.forEach(opt=>{
+    const option = document.createElement("option");
+    option.value = opt.value;
+    option.textContent = opt.label;
+    withdrawalDateSelect.appendChild(option);
+  });
 }
 
-
-
 async function checkMember(){
-
-  const memberNo =
-  memberNoInput.value.trim();
-
-  const email =
-  emailInput.value.trim();
+  const memberNo = memberNoInput.value.trim();
+  const email = emailInput.value.trim();
 
   if(!memberNo || !email) return;
 
   const url =
     GAS_URL
     + "?action=checkMember"
-    + "&memberNo="
-    + encodeURIComponent(memberNo)
-    + "&email="
-    + encodeURIComponent(email);
+    + "&memberNo=" + encodeURIComponent(memberNo)
+    + "&email=" + encodeURIComponent(email);
 
   const res = await fetch(url);
-
   const data = await res.json();
 
   if(data.ok){
-
-    memberStatus.textContent =
-    "会員情報を確認しました";
-
-    memberStatus.style.color =
-    "#00e676";
-
+    memberStatus.textContent = "会員情報を確認しました";
+    memberStatus.style.color = "#00e676";
   }else{
-
-    memberStatus.textContent =
-    data.message;
-
-    memberStatus.style.color =
-    "#ff5252";
-
+    memberStatus.textContent = data.message;
+    memberStatus.style.color = "#ff5252";
   }
-
 }
 
-memberNoInput.addEventListener(
-"blur",
-checkMember
-);
+memberNoInput.addEventListener("blur", checkMember);
+emailInput.addEventListener("blur", checkMember);
 
-emailInput.addEventListener(
-"blur",
-checkMember
-);
+form.addEventListener("submit", async(e)=>{
+  e.preventDefault();
 
+  const payload = {
+    action:"submitWithdrawal",
+    lastName:document.getElementById("lastName").value,
+    firstName:document.getElementById("firstName").value,
+    lastKana:document.getElementById("lastKana").value,
+    firstKana:document.getElementById("firstKana").value,
+    memberNo:memberNoInput.value,
+    email:emailInput.value,
+    phone:document.getElementById("phone").value,
+    withdrawalDate:withdrawalDateSelect.value,
+    reason:reasonSelect.value,
+    otherReason:document.getElementById("otherReason").value,
+    confirm1:document.getElementById("confirm1").checked,
+    confirm2:document.getElementById("confirm2").checked,
+    confirm3:document.getElementById("confirm3").checked
+  };
 
+  try{
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(payload));
 
-form.addEventListener("submit",
-async(e)=>{
+    const res = await fetch(GAS_URL,{
+      method:"POST",
+      body:formData
+    });
 
-e.preventDefault();
+    const data = await res.json();
 
-const payload = {
+    if(data.ok){
+      alert(data.message);
+      form.reset();
+      otherField.classList.add("hidden");
+      memberStatus.textContent = "";
+      loadWithdrawalOptions();
+    }else{
+      alert(data.message);
+    }
 
-action:"submitWithdrawal",
-
-lastName:
-document.getElementById("lastName").value,
-
-firstName:
-document.getElementById("firstName").value,
-
-lastKana:
-document.getElementById("lastKana").value,
-
-firstKana:
-document.getElementById("firstKana").value,
-
-memberNo:
-memberNoInput.value,
-
-email:
-emailInput.value,
-
-phone:
-document.getElementById("phone").value,
-
-withdrawalDate:
-withdrawalDateSelect.value,
-
-reason:
-reasonSelect.value,
-
-otherReason:
-document.getElementById("otherReason").value,
-
-confirm1:
-document.getElementById("confirm1").checked,
-
-confirm2:
-document.getElementById("confirm2").checked,
-
-confirm3:
-document.getElementById("confirm3").checked
-
-};
-
-try{
-
-const formData = new FormData();
-
-formData.append(
-  "data",
-  JSON.stringify(payload)
-);
-
-const res = await fetch(GAS_URL,{
-  method:"POST",
-  body:formData
+  }catch(err){
+    console.error(err);
+    alert("送信エラー");
+  }
 });
-
-const data = await res.json();
-
-if(data.ok){
-
-alert(data.message);
-
-form.reset();
-
-otherField.classList.add("hidden");
-
-memberStatus.textContent = "";
 
 loadWithdrawalOptions();
-
-}else{
-
-alert(data.message);
-
-}
-
-}catch(err){
-
-console.error(err);
-
-alert("送信エラー");
-
-}
-
-});
-
-
-
-window.addEventListener("DOMContentLoaded", async ()=>{
-
-  await loadWithdrawalOptions();
-
-});
-
-
 </script>
 
 </body>
