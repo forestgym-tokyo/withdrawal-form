@@ -485,25 +485,39 @@ reasonSelect.addEventListener("change",()=>{
 
 async function loadWithdrawalOptions(){
 
-  const res = await fetch(
-    GAS_URL + "?action=getWithdrawalOptions"
-  );
+  try{
 
-  const data = await res.json();
+    const res = await fetch(
+      GAS_URL + "?action=getWithdrawalOptions"
+    );
 
-  withdrawalDateSelect.innerHTML = "";
+    const text = await res.text();
 
-  data.options.forEach(opt=>{
+    const data = JSON.parse(text);
 
-    const option =
-    document.createElement("option");
+    withdrawalDateSelect.innerHTML = "";
 
-    option.value = opt.value;
-    option.textContent = opt.label;
+    data.options.forEach(opt=>{
 
-    withdrawalDateSelect.appendChild(option);
+      const option =
+      document.createElement("option");
 
-  });
+      option.value = opt.value;
+      option.textContent = opt.label;
+
+      withdrawalDateSelect.appendChild(option);
+
+    });
+
+  }catch(err){
+
+    console.error(err);
+
+    alert("退会期日取得エラー");
+
+  }
+
+}
 
 }
 
