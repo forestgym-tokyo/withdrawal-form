@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
 <title>The Forest Gym | 退会届フォーム</title>
 
 <style>
 
 *{
-  box-sizing:border-box;
   margin:0;
   padding:0;
+  box-sizing:border-box;
 }
 
 body{
   background:#0b0b0b;
   color:#fff;
   font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
-  line-height:1.6;
   padding:24px 14px 60px;
+  line-height:1.7;
 }
 
 .container{
@@ -26,17 +27,34 @@ body{
   margin:0 auto;
 }
 
+.logo-wrap{
+  text-align:center;
+  margin-bottom:18px;
+}
+
+.logo-wrap img{
+  width:260px;
+  max-width:85%;
+}
+
+h1{
+  text-align:center;
+  font-size:30px;
+  margin-bottom:4px;
+  font-weight:700;
+}
+
 .subtitle{
   text-align:center;
+  color:#888;
   font-size:12px;
   letter-spacing:2px;
-  color:#999;
-  margin-bottom:34px;
+  margin-bottom:30px;
 }
 
 .section{
   background:#151515;
-  border:1px solid #242424;
+  border:1px solid #262626;
   border-radius:18px;
   padding:22px;
   margin-bottom:18px;
@@ -50,9 +68,8 @@ body{
 
 .section-title small{
   display:block;
-  font-size:11px;
   color:#888;
-  margin-top:2px;
+  font-size:11px;
   letter-spacing:1px;
 }
 
@@ -61,19 +78,16 @@ body{
   gap:10px;
 }
 
-.row .field{
-  flex:1;
-}
-
 .field{
   margin-bottom:16px;
+  flex:1;
 }
 
 label{
   display:block;
-  font-size:13px;
   margin-bottom:7px;
-  color:#d7d7d7;
+  font-size:13px;
+  color:#ddd;
 }
 
 input,
@@ -83,8 +97,8 @@ select{
   background:#0d0d0d;
   border:1px solid #333;
   border-radius:12px;
-  color:#fff;
   padding:14px;
+  color:#fff;
   font-size:16px;
 }
 
@@ -95,17 +109,21 @@ select:focus{
   border-color:#00c853;
 }
 
+textarea{
+  min-height:120px;
+  resize:vertical;
+}
+
 .notice{
   font-size:12px;
-  color:#aaa;
-  margin-top:12px;
-  line-height:1.7;
+  color:#999;
+  margin-top:10px;
 }
 
 .checkbox-group{
   display:flex;
   flex-direction:column;
-  gap:16px;
+  gap:18px;
 }
 
 .checkbox-item{
@@ -124,9 +142,8 @@ select:focus{
 
 .checkbox-item label{
   margin:0;
-  font-size:14px;
   line-height:1.8;
-  color:#f0f0f0;
+  font-size:14px;
 }
 
 .highlight{
@@ -142,24 +159,24 @@ select:focus{
   color:#000;
   font-size:18px;
   font-weight:800;
-  cursor:pointer;
   margin-top:8px;
+  cursor:pointer;
 }
 
 .submit-sub{
   display:block;
   font-size:11px;
-  letter-spacing:1.5px;
+  letter-spacing:1px;
   margin-top:4px;
-}
-
-textarea{
-  min-height:120px;
-  resize:vertical;
 }
 
 .hidden{
   display:none;
+}
+
+#memberStatus{
+  font-size:13px;
+  margin-top:8px;
 }
 
 </style>
@@ -169,33 +186,17 @@ textarea{
 
 <div class="container">
 
-<div style="text-align:center;margin-bottom:18px;">
-  <img
-    src="logo(5).png"
-    alt="The Forest Gym"
-    style="
-      width:260px;
-      max-width:85%;
-      height:auto;
-      display:inline-block;
-    "
-  >
+<div class="logo-wrap">
+  <img src="logo(5).png">
 </div>
 
-<h1 style="
-  text-align:center;
-  font-size:30px;
-  margin-bottom:4px;
-  font-weight:700;
-">
-  退会届フォーム
-</h1>
+<h1>退会届フォーム</h1>
 
 <div class="subtitle">
-  WITHDRAWAL REQUEST
+WITHDRAWAL REQUEST
 </div>
 
-<form>
+<form id="withdrawalForm">
 
 <div class="section">
 
@@ -205,42 +206,76 @@ textarea{
 </div>
 
 <div class="row">
-  <div class="field">
-    <label>姓</label>
-    <input type="text" placeholder="山田">
-  </div>
 
-  <div class="field">
-    <label>名</label>
-    <input type="text" placeholder="太郎">
-  </div>
+<div class="field">
+<label>姓</label>
+<input
+type="text"
+id="lastName"
+placeholder="山田"
+required>
+</div>
+
+<div class="field">
+<label>名</label>
+<input
+type="text"
+id="firstName"
+placeholder="太郎"
+required>
+</div>
+
 </div>
 
 <div class="row">
-  <div class="field">
-    <label>姓（フリガナ）</label>
-    <input type="text" placeholder="ヤマダ">
-  </div>
 
-  <div class="field">
-    <label>名（フリガナ）</label>
-    <input type="text" placeholder="タロウ">
-  </div>
+<div class="field">
+<label>姓（フリガナ）</label>
+<input
+type="text"
+id="lastKana"
+placeholder="ヤマダ"
+required>
 </div>
 
 <div class="field">
-  <label>会員番号</label>
-  <input type="text" placeholder="123456">
+<label>名（フリガナ）</label>
+<input
+type="text"
+id="firstKana"
+placeholder="タロウ"
+required>
+</div>
+
 </div>
 
 <div class="field">
-  <label>メールアドレス</label>
-  <input type="email" placeholder="example@gmail.com">
+<label>会員番号</label>
+<input
+type="text"
+id="memberNo"
+placeholder="123456"
+required>
 </div>
 
 <div class="field">
-  <label>電話番号</label>
-  <input type="tel" placeholder="09012345678">
+<label>メールアドレス</label>
+<input
+type="email"
+id="email"
+placeholder="example@gmail.com"
+required>
+</div>
+
+<div id="memberStatus"></div>
+
+<div class="field">
+<label>電話番号</label>
+<input
+type="tel"
+id="phone"
+placeholder="09012345678"
+required>
 </div>
 
 </div>
@@ -253,10 +288,7 @@ textarea{
 </div>
 
 <div class="field">
-<select>
-  <option>2026年6月末</option>
-  <option>2026年7月末</option>
-</select>
+<select id="withdrawalDate"></select>
 </div>
 
 <div class="notice">
@@ -273,17 +305,41 @@ textarea{
 </div>
 
 <div class="field">
+
 <select id="reasonSelect">
-  <option>転居（予定含む）のため</option>
-  <option>利用機会が少ないため</option>
-  <option>目標達成したため</option>
-  <option>その他</option>
+
+<option>
+転居（予定含む）のため
+</option>
+
+<option>
+利用機会が少ないため
+</option>
+
+<option>
+目標達成したため
+</option>
+
+<option>
+その他
+</option>
+
 </select>
+
 </div>
 
-<div class="field hidden" id="otherField" style="margin-top:16px;">
-  <label>理由、ご意見等自由にご記載ください。</label>
-  <textarea placeholder="ご自由にご記載ください"></textarea>
+<div
+class="field hidden"
+id="otherField">
+
+<label>
+理由、ご意見等自由にご記載ください。
+</label>
+
+<textarea
+id="otherReason"
+placeholder="ご自由にご記載ください"></textarea>
+
 </div>
 
 </div>
@@ -298,47 +354,85 @@ textarea{
 <div class="checkbox-group">
 
 <div class="checkbox-item">
-  <input type="checkbox">
-  <label>
-    継続条件付きキャンペーンでのご入会／パーソナルトレーニング購入で継続条件が満たない場合、
-    <span class="highlight">
-    キャンペーン価格は適用されず通常価格との差額の精算が必要
-    </span>
-    となります。
-  </label>
+
+<input
+type="checkbox"
+id="confirm1"
+required>
+
+<label for="confirm1">
+
+継続条件付きキャンペーンでのご入会／
+パーソナルトレーニング購入で継続条件が満たない場合、
+
+<span class="highlight">
+キャンペーン価格は適用されず通常価格との差額の精算が必要
+</span>
+
+となります。
+
+</label>
+
 </div>
 
 <div class="checkbox-item">
-  <input type="checkbox">
-  <label>
-    記載の退会期日が、入会時に説明を受けた退会できない期間の場合、
-    <span class="highlight">
-    退会可能な最短期日をもって退会
-    </span>
-    となります。
-  </label>
+
+<input
+type="checkbox"
+id="confirm2"
+required>
+
+<label for="confirm2">
+
+記載の退会期日が、
+入会時に説明を受けた退会できない期間の場合、
+
+<span class="highlight">
+退会可能な最短期日をもって退会
+</span>
+
+となります。
+
+</label>
+
 </div>
 
 <div class="checkbox-item">
-  <input type="checkbox">
-  <label>
-    在籍中・退会後に虚偽や一方的な情報を拡散した場合、当ジムは必要に応じて
-    <span class="highlight">
-    法的措置を含む対応
-    </span>
-    を行う可能性があることを承知します。
-  </label>
-</div>
+
+<input
+type="checkbox"
+id="confirm3"
+required>
+
+<label for="confirm3">
+
+在籍中・退会後に虚偽や一方的な情報を拡散した場合、
+当ジムは必要に応じて
+
+<span class="highlight">
+法的措置を含む対応
+</span>
+
+を行う可能性があることを承知します。
+
+</label>
 
 </div>
 
 </div>
 
-<button type="button" class="submit-btn">
+</div>
+
+<button
+type="submit"
+class="submit-btn">
+
 退会届を送信する
+
 <span class="submit-sub">
 SUBMIT WITHDRAWAL REQUEST
 </span>
+
 </button>
 
 </form>
@@ -347,12 +441,35 @@ SUBMIT WITHDRAWAL REQUEST
 
 <script>
 
-const reasonSelect = document.getElementById("reasonSelect");
-const otherField = document.getElementById("otherField");
+const GAS_URL =
+"https://script.google.com/macros/s/AKfycbx_5y8jMr6ItMS0UOijXEhDNxSJqPDFVmRj5-mOHxpu3ZBtRpmmP9M1UXs1DyRV73LC7A/exec";
 
-reasonSelect.addEventListener("change", () => {
+const reasonSelect =
+document.getElementById("reasonSelect");
 
-  if(reasonSelect.value === "その他"){
+const otherField =
+document.getElementById("otherField");
+
+const withdrawalDateSelect =
+document.getElementById("withdrawalDate");
+
+const form =
+document.getElementById("withdrawalForm");
+
+const memberNoInput =
+document.getElementById("memberNo");
+
+const emailInput =
+document.getElementById("email");
+
+const memberStatus =
+document.getElementById("memberStatus");
+
+
+
+reasonSelect.addEventListener("change",()=>{
+
+  if(reasonSelect.value==="その他"){
 
     otherField.classList.remove("hidden");
 
@@ -363,6 +480,176 @@ reasonSelect.addEventListener("change", () => {
   }
 
 });
+
+
+
+async function loadWithdrawalOptions(){
+
+  const res = await fetch(
+    GAS_URL + "?action=getWithdrawalOptions"
+  );
+
+  const data = await res.json();
+
+  withdrawalDateSelect.innerHTML = "";
+
+  data.options.forEach(opt=>{
+
+    const option =
+    document.createElement("option");
+
+    option.value = opt.value;
+    option.textContent = opt.label;
+
+    withdrawalDateSelect.appendChild(option);
+
+  });
+
+}
+
+
+
+async function checkMember(){
+
+  const memberNo =
+  memberNoInput.value.trim();
+
+  const email =
+  emailInput.value.trim();
+
+  if(!memberNo || !email) return;
+
+  const url =
+    GAS_URL
+    + "?action=checkMember"
+    + "&memberNo="
+    + encodeURIComponent(memberNo)
+    + "&email="
+    + encodeURIComponent(email);
+
+  const res = await fetch(url);
+
+  const data = await res.json();
+
+  if(data.ok){
+
+    memberStatus.textContent =
+    "会員情報を確認しました";
+
+    memberStatus.style.color =
+    "#00e676";
+
+  }else{
+
+    memberStatus.textContent =
+    data.message;
+
+    memberStatus.style.color =
+    "#ff5252";
+
+  }
+
+}
+
+memberNoInput.addEventListener(
+"blur",
+checkMember
+);
+
+emailInput.addEventListener(
+"blur",
+checkMember
+);
+
+
+
+form.addEventListener("submit",
+async(e)=>{
+
+e.preventDefault();
+
+const payload = {
+
+action:"submitWithdrawal",
+
+lastName:
+document.getElementById("lastName").value,
+
+firstName:
+document.getElementById("firstName").value,
+
+lastKana:
+document.getElementById("lastKana").value,
+
+firstKana:
+document.getElementById("firstKana").value,
+
+memberNo:
+memberNoInput.value,
+
+email:
+emailInput.value,
+
+phone:
+document.getElementById("phone").value,
+
+withdrawalDate:
+withdrawalDateSelect.value,
+
+reason:
+reasonSelect.value,
+
+otherReason:
+document.getElementById("otherReason").value,
+
+confirm1:
+document.getElementById("confirm1").checked,
+
+confirm2:
+document.getElementById("confirm2").checked,
+
+confirm3:
+document.getElementById("confirm3").checked
+
+};
+
+const res = await fetch(GAS_URL,{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify(payload)
+
+});
+
+const data = await res.json();
+
+if(data.ok){
+
+alert(data.message);
+
+form.reset();
+
+otherField.classList.add("hidden");
+
+memberStatus.textContent = "";
+
+loadWithdrawalOptions();
+
+}else{
+
+alert(data.message);
+
+}
+
+});
+
+
+
+loadWithdrawalOptions();
 
 </script>
 
