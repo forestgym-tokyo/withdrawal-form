@@ -568,11 +568,7 @@ async(e)=>{
 
 e.preventDefault();
 
-alert("submit start");
-
-console.log("submit start");
-
-});
+const payload = {
 
 action:"submitWithdrawal",
 
@@ -658,7 +654,6 @@ console.error(err);
 alert("送信エラー");
 
 }
-
 
 });
 loadWithdrawalOptions();
