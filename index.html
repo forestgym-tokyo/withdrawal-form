@@ -643,13 +643,6 @@ formData.append(
   JSON.stringify(payload)
 );
 
-const formData = new FormData();
-
-formData.append(
-  "data",
-  JSON.stringify(payload)
-);
-
 const res = await fetch(GAS_URL,{
   method:"POST",
   body:formData
