@@ -527,28 +527,17 @@ form.addEventListener("submit", async(e)=>{
     confirm3:document.getElementById("confirm3").checked
   };
 
-  try{
+try{
 
-  const formData = new FormData();
+  const url =
+    GAS_URL
+    + "?action=submitWithdrawal"
+    + "&data="
+    + encodeURIComponent(JSON.stringify(payload));
 
-  formData.append(
-    "data",
-    JSON.stringify(payload)
-  );
+  const res = await fetch(url);
 
-  const res = await fetch(GAS_URL,{
-
-    method:"POST",
-
-    body:formData
-
-  });
-
-  const text = await res.text();
-
-  alert(text);
-
-  const data = JSON.parse(text);
+  const data = await res.json();
 
   if(data.ok){
 
