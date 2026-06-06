@@ -426,7 +426,7 @@ required>
 type="submit"
 class="submit-btn">
 
-退会届を送信する
+退会申請を送信する
 
 <span class="submit-sub">
 SUBMIT WITHDRAWAL REQUEST
@@ -458,7 +458,7 @@ reasonSelect.addEventListener("change",()=>{
 });
 
 function isValidKanaOrAlphabet(value){
-  return /^[ァ-ヶーA-Za-zＡ-Ｚａ-ｚ\s]+$/.test(value);
+  return /^[ァ-ヶーｦ-ﾟA-Za-zＡ-Ｚａ-ｚ\s]+$/.test(value);
 }
 
 function resetSubmitButton(){
