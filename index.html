@@ -613,11 +613,15 @@ submitBtn.style.transform = "scale(0.98)";
 
     alert("送信エラー：" + err.message);
 
-  }finally{
+}catch(err){
 
-    resetSubmitButton();
+  console.error(err);
 
-  }
+  resetSubmitButton();
+
+  alert("送信エラー：" + err.message);
+
+}
 });
 
 loadWithdrawalOptions();
