@@ -589,28 +589,33 @@ submitBtn.style.transform = "scale(0.98)";
 
     const data = await res.json();
 
-    if(data.ok){
+if(data.ok){
 
-      alert(data.message);
+  submitBtn.innerHTML =
+  '送信完了<span class="submit-sub">COMPLETED</span>';
 
-      form.reset();
+  submitBtn.style.background = "#1976d2";
+  submitBtn.style.color = "#fff";
+  submitBtn.style.opacity = "1";
+  submitBtn.style.transform = "scale(1)";
 
-      otherField.classList.add("hidden");
+  alert(data.message);
 
-      memberStatus.textContent = "";
+  form.reset();
 
-      await loadWithdrawalOptions();
+  otherField.classList.add("hidden");
 
-    }else{
+  memberStatus.textContent = "";
 
-      alert(data.message);
+  await loadWithdrawalOptions();
 
-    }
-submitBtn.innerHTML =
-'送信完了<span class="submit-sub">COMPLETED</span>';
+}else{
 
-submitBtn.style.background = "#1976d2";
-submitBtn.style.color = "#fff";
+  resetSubmitButton();
+
+  alert(data.message);
+
+}
 }catch(err){
 
   console.error(err);
