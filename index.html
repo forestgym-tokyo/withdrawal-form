@@ -546,9 +546,14 @@ form.addEventListener("submit", async(e)=>{
     return;
   }
 
- submitBtn.disabled = true;
+submitBtn.disabled = true;
 submitBtn.innerHTML =
 '送信中です...<span class="submit-sub">PLEASE WAIT</span>';
+
+submitBtn.style.background = "#555";
+submitBtn.style.color = "#ddd";
+submitBtn.style.opacity = "0.55";
+submitBtn.style.transform = "scale(0.98)";
 
   const payload = {
     action:"submitWithdrawal",
