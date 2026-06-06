@@ -416,7 +416,6 @@ required>
 を行う可能性があることを承知します。
 
 </label>
-
 </div>
 
 </div>
@@ -438,7 +437,6 @@ SUBMIT WITHDRAWAL REQUEST
 </form>
 
 </div>
-
 <script>
 const GAS_URL =
 "https://script.google.com/macros/s/AKfycbx_5y8jMr6ItMS0UOijXEhDNxSJqPDFVmRj5-mOHxpu3ZBtRpmmP9M1UXs1DyRV73LC7A/exec";
@@ -451,9 +449,23 @@ const memberNoInput = document.getElementById("memberNo");
 const emailInput = document.getElementById("email");
 const memberStatus = document.getElementById("memberStatus");
 
+const submitBtn = document.querySelector(".submit-btn");
+const lastKanaInput = document.getElementById("lastKana");
+const firstKanaInput = document.getElementById("firstKana");
+
 reasonSelect.addEventListener("change",()=>{
   otherField.classList.toggle("hidden", reasonSelect.value !== "その他");
 });
+
+function isValidKanaOrAlphabet(value){
+  return /^[ァ-ヶーA-Za-zＡ-Ｚａ-ｚ\s]+$/.test(value);
+}
+
+function resetSubmitButton(){
+  submitBtn.disabled = false;
+  submitBtn.innerHTML =
+    '退会届を送信する<span class="submit-sub">SUBMIT WITHDRAWAL REQUEST</span>';
+}
 
 async function loadWithdrawalOptions(){
   withdrawalDateSelect.innerHTML = `
@@ -510,12 +522,34 @@ emailInput.addEventListener("blur", checkMember);
 form.addEventListener("submit", async(e)=>{
   e.preventDefault();
 
+  if(submitBtn.disabled){
+    return;
+  }
+
+  const lastKana = lastKanaInput.value.trim();
+  const firstKana = firstKanaInput.value.trim();
+
+  if(!isValidKanaOrAlphabet(lastKana)){
+    alert("姓（フリガナ）は、カタカナまたはアルファベットで入力してください。");
+    lastKanaInput.focus();
+    return;
+  }
+
+  if(!isValidKanaOrAlphabet(firstKana)){
+    alert("名（フリガナ）は、カタカナまたはアルファベットで入力してください。");
+    firstKanaInput.focus();
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '送信中...';
+
   const payload = {
     action:"submitWithdrawal",
     lastName:document.getElementById("lastName").value,
     firstName:document.getElementById("firstName").value,
-    lastKana:document.getElementById("lastKana").value,
-    firstKana:document.getElementById("firstKana").value,
+    lastKana:lastKana,
+    firstKana:firstKana,
     memberNo:memberNoInput.value,
     email:emailInput.value,
     phone:document.getElementById("phone").value,
@@ -527,48 +561,52 @@ form.addEventListener("submit", async(e)=>{
     confirm3:document.getElementById("confirm3").checked
   };
 
-try{
+  try{
 
-  const url =
-    GAS_URL
-    + "?action=submitWithdrawal"
-    + "&data="
-    + encodeURIComponent(JSON.stringify(payload));
+    const url =
+      GAS_URL
+      + "?action=submitWithdrawal"
+      + "&data="
+      + encodeURIComponent(JSON.stringify(payload));
 
-  const res = await fetch(url);
+    const res = await fetch(url);
 
-  const data = await res.json();
+    const data = await res.json();
 
-  if(data.ok){
+    if(data.ok){
 
-    alert(data.message);
+      alert(data.message);
 
-    form.reset();
+      form.reset();
 
-    otherField.classList.add("hidden");
+      otherField.classList.add("hidden");
 
-    memberStatus.textContent = "";
+      memberStatus.textContent = "";
 
-    loadWithdrawalOptions();
+      await loadWithdrawalOptions();
 
-  }else{
+    }else{
 
-    alert(data.message);
+      alert(data.message);
+
+    }
+
+  }catch(err){
+
+    console.error(err);
+
+    alert("送信エラー：" + err.message);
+
+  }finally{
+
+    resetSubmitButton();
 
   }
-
-}catch(err){
-
-  console.error(err);
-
-  alert("送信エラー：" + err.message);
-
-}
 });
 
 loadWithdrawalOptions();
-
 </script>
+
 
 </body>
 </html>
