@@ -606,7 +606,11 @@ submitBtn.style.transform = "scale(0.98)";
       alert(data.message);
 
     }
+submitBtn.innerHTML =
+'送信完了<span class="submit-sub">COMPLETED</span>';
 
+submitBtn.style.background = "#1976d2";
+submitBtn.style.color = "#fff";
 }catch(err){
 
   console.error(err);
